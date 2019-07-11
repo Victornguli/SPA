@@ -1,0 +1,111 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+{% load crispy_forms_tags %}
+
+  {% if user.is_authenticated %}
+  <div class="row m-3">
+      <!-- Left Column -->
+      <div class="col-md-2">
+      </div>
+
+      <!-- Form Field Column -->
+      <div class="col-md-8">
+          <form method="post" enctype="multipart/form-data" action="{% url "add_project" %}" class="mt-5">
+            {% csrf_token %}
+            <h2 class="text-secondary mb-2">Enter the Project information</h2>
+            <div class="form-row m-auto">
+              <div class="form-group col-md-12 mb-0">
+                {{ form.project_title|as_crispy_field }}
+              </div>
+            </div>
+        
+            <div class="form-row">
+              <div class="form-group col-md-12 mb-0">
+                  {{ form.project_category|as_crispy_field }}
+              </div>
+            </div>
+        
+            <div class="form-row">
+              <div class="form-group col-md-12 mb-0">
+                {{ form.unit|as_crispy_field }}
+            </div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group col-md-12">
+                {{ form.country|as_crispy_field }}
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group col-md-12">
+                {{ form.sub_office|as_crispy_field }}
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group col-md-12 mb-0">
+                {{ form.description|as_crispy_field }}
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group col-md-12 mb-2">
+                <div class="input-group date" id="datetimepicker1" data-target-input="nearest">
+                   Start Date <br> {{ form.start_date }}
+                    <div class="input-group-append" data-target="#datetimepicker1" data-toggle="datetimepicker">
+                      <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                    </div>
+                </div>
+            </div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group col-md-12 mb-0">
+                  <div class="input-group date" id="datetimepicker2" data-target-input="nearest">
+                      End Date <br> {{ form.end_date }}
+                       <div class="input-group-append" data-target="#datetimepicker2" data-toggle="datetimepicker">
+                         <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                       </div>
+                   </div>
+              </div>
+            </div>
+        
+            <div class="form-row">
+              <div class="form-group col-md-12 mt-1">
+                {{ form.file|as_crispy_field}}
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="col-md-3">
+              </div>
+              <div class="col-md-6">
+                  <button type="submit" class="btn btn-block btn-outline-primary mt-1 pr-5 pl-5 mb-5">Add Project</button>  
+              </div>
+              <div class="col-md-3">
+              </div>
+            </div>              
+          </form>
+      </div>
+
+      <div class="col-md-2">
+      </div> 
+      <!-- Right Column -->
+
+  </div>
+  {% endif %}
+
+  <script>
+    $(function () {
+      $("#datetimepicker1").datetimepicker({
+        format: 'DD/MM/YYYY HH:mm',
+      });
+      $("#datetimepicker2").datetimepicker({
+        format: 'DD/MM/YYYY HH:mm',
+      });
+    });
+  </script>
+{% endblock %}

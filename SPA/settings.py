@@ -121,9 +121,11 @@ USE_TZ = True
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(os.path.dirname(BASE_DIR), "approval/static/approval")
 
-MEDIA_URL = "/media/"
+LOGIN_REDIRECT_URL = '/'
+LOGOUT_REDIRECT_URL = '/'
 
-MEADIA_ROOT = os.path.join(BASE_DIR, "media")
+MEDIA_URL = "/media/"
+MEADIA_ROOT = os.path.join(os.path.dirname(BASE_DIR), "media")
 
 AUTH_USER_MODEL = 'approval.User'
 

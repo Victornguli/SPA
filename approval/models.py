@@ -3,26 +3,82 @@ from django.contrib.auth.models import AbstractUser
 
 # Create your models here.
 class User(AbstractUser):
-    # user_category = models.CharField(max_length=50, default="nutrition")
-    is_nutrition = models.BooleanField(default = True)
-
-class Nutrition(models.Model):
-    group_name = models.CharField(max_length=50, default="nutrition")
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    unit = models.CharField(max_length=50, default="Nutrition")
+    # unit = models.OneToOneField(Unit, on_delete=models.CASCADE)
 
     def __str__(self):
-        return self.group_name
+        return self.username
 
+class Unit(models.Model):
+    unit_name = models.CharField(max_length=50, default="Nutrition")
+
+    def __str__(self):
+        return self.unit_name
+
+class TechnicalTeam(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+
+class ProjectReviewComitee(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
 
 class ProjectCategory(models.Model):
     project_category = models.CharField(max_length=50)
+    unit = models.OneToOneField(Unit, on_delete=models.CASCADE)
 
+    def __str__(self):
+        return self.project_category
 
 class Project(models.Model):
-    name = models.CharField(max_length=50)
+    status = (
+        ("new", "New"),
+        ("tech", "Technical_Review"),
+        ("prc_review", "PRC_Review"),
+        ("prc_meeting", "PRC_Meeting"),
+        ("nfr", "NFR_Created"),
+        ("closed", "Closed"),
+    )
+    project_title = models.CharField(max_length=50)
+    description = models.CharField(max_length=200)
     project_category = models.ForeignKey(ProjectCategory, on_delete=models.CASCADE)
+    country = models.CharField(max_length=50)
+    sub_office = models.CharField(max_length=50)
+    project_category = models.CharField(max_length=50)
+    start_date = models.DateField(auto_now=False, auto_now_add=False)
+    end_date = models.DateField(auto_now=False, auto_now_add=False)
+    unit = models.CharField(max_length=50)
+    status = models.CharField(max_length=50, choices=status, default="new")
+
+    def __str__(self):
+        return self.project_title
+
+
+
+class Country(models.Model):
+    name = models.CharField(max_length=50)
+
+    def __str__(self):
+        return self.name
+
+class Suboffice(models.Model):
+    name = models.CharField(max_length=100)
+    country = models.ForeignKey(Country, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return self.name    
+
+class Document(models.Model):
+    file = models.FileField(upload_to='media/documents/')
+    project = models.ForeignKey(Project, on_delete=models.CASCADE)
+    uploaded_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.file    
 
 
 class Comment(models.Model):
     text = models.CharField(max_length=200)
-    sender = models.ForeignKey(Project, on_delete=models.CASCADE)
+    sender = models.ForeignKey(User, on_delete=models.CASCADE)
+    project = models.ForeignKey(Project, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return self.text

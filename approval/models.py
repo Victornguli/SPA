@@ -38,7 +38,7 @@ class Project(models.Model):
         ("closed", "Closed"),
     )
     project_title = models.CharField(max_length=50)
-    description = models.CharField(max_length=200)
+    description = models.CharField(max_length=500)
     project_category = models.ForeignKey(ProjectCategory, on_delete=models.CASCADE)
     country = models.CharField(max_length=50)
     sub_office = models.CharField(max_length=50)

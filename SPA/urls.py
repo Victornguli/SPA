@@ -27,6 +27,7 @@ urlpatterns = [
     path('', views.index, name="index"),
     # path('addProject', views.addProject, name="addProject"),
     path('add_project', views.AddProject, name="add_project"),
+    path('^project_details/(?P<project_id>\d+)/$', views.ProjectDetails, name='project_details')
     # path('upload', views.Upload, name="upload"),
 ]
 

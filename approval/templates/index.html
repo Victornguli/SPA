@@ -5,23 +5,46 @@
   <div class="container-fluid">
     {% if user.is_authenticated %}
 
-
     <div class="card-columns">
         {% for project in projects %}
 
         <div class="card">
           <div class="card-header">Project-Title : <b>{{ project.project_title }}</b></div>
           <div class="card-body text-left">
-            <p class="card-text">{{ project.description }}</p>
+            <p class="card-text description">Description {{ project.description }}</p>
             <p class="card-text">Status : {{ project.status }}</p>
             <p class="card-text">Country : {{ project.country }}</p>
             <p class="card-text">Category : {{ project.project_category }}</p>
             <p class="card-text">Review Date : {{ project.start_date }} to {{ project.end_date }}</p>
           </div>
+          <div class="card-footer">
+              <a class="text-light" href="{%  url "project_details" project.id %}"><button class="btn btn-outline-info">View Project</button></a>
+          </div>
         </div>
 
         {% endfor %}
     </div>
+  {% else %}
+  <div class="row text-center">
+    <div class="col-md-3"></div>
+    <div class="col-md-6">
+        <div class="alert alert-warning">You are not logged in. Try logging in <a href="{% url "login" %}"><b>here</b></a></div>
+    </div>
+    <div class="col-md-3"></div>
+  </div>
   {% endif %}
   </div>
+{% endblock %}
+{% block javascript %}
+  <script>
+    $(document).ready(function (){ 
+      $(".description").each(function(i){
+        var len=$(this).text().trim().length;
+        if(len>250)
+        {
+            $(this).text($(this).text().substr(0,100)+'...');
+        }
+    });
+    }); 
+  </script>
 {% endblock %}

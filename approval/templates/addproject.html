@@ -15,7 +15,7 @@
           <form method="post" enctype="multipart/form-data" action="{% url "add_project" %}" class="mt-5">
             {% csrf_token %}
             <h2 class="text-secondary mb-2">Enter the Project information</h2>
-            <div class="form-row m-auto">
+            <div class="form-row">
               <div class="form-group col-md-12 mb-0">
                 {{ form.project_title|as_crispy_field }}
               </div>
@@ -96,6 +96,14 @@
       <!-- Right Column -->
 
   </div>
+  {% else %}
+  <div class="row text-center">
+      <div class="col-md-3"></div>
+      <div class="col-md-6">
+          <div class="alert alert-warning">You are not logged in. Try logging in <a href="{% url "login" %}"><b>here</b></a></div>
+      </div>
+      <div class="col-md-3"></div>
+    </div>
   {% endif %}
 
   <script>

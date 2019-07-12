@@ -31,10 +31,10 @@ class ProjectCategory(models.Model):
 class Project(models.Model):
     status = (
         ("new", "New"),
-        ("tech", "Technical_Review"),
-        ("prc_review", "PRC_Review"),
-        ("prc_meeting", "PRC_Meeting"),
-        ("nfr", "NFR_Created"),
+        ("tech", "Technical Review"),
+        ("prc_review", "PRC Review"),
+        ("prc_meeting", "PRC Meeting"),
+        ("nfr", "NFR Created"),
         ("closed", "Closed"),
     )
     project_title = models.CharField(max_length=50)
@@ -46,12 +46,10 @@ class Project(models.Model):
     start_date = models.DateField(auto_now=False, auto_now_add=False)
     end_date = models.DateField(auto_now=False, auto_now_add=False)
     unit = models.CharField(max_length=50)
-    status = models.CharField(max_length=50, choices=status, default="new")
+    status = models.CharField(max_length=50, choices=status, default="tech")
 
     def __str__(self):
         return self.project_title
-
-
 
 class Country(models.Model):
     name = models.CharField(max_length=50)
@@ -76,9 +74,19 @@ class Document(models.Model):
 
 
 class Comment(models.Model):
-    text = models.CharField(max_length=200)
+    comment_text = models.CharField(max_length=200)
     sender = models.ForeignKey(User, on_delete=models.CASCADE)
     project = models.ForeignKey(Project, on_delete=models.CASCADE)
+    status = (
+        ("new", "New"),
+        ("tech", "Technical Review"),
+        ("prc_review", "PRC Review"),
+        ("prc_meeting", "PRC Meeting"),
+        ("nfr", "NFR Created"),
+        ("closed", "Closed"),
+    )
+    status = models.CharField(max_length=50, choices=status, default="tech")
+    add_date = models.DateField(auto_now=False, auto_now_add=True)
 
     def __str__(self):
         return self.text

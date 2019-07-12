@@ -12,3 +12,7 @@ admin.site.register(Project)
 admin.site.register(Country)
 admin.site.register(Suboffice)
 admin.site.register(Document)
+
+
+admin.site.register(Comment)
+

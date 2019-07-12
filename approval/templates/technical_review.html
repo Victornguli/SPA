@@ -1,0 +1,64 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+
+{% if user.is_authenticated %}
+        <div class="card">
+            <div class="card-header">
+                    <h5 class="mt-2 text-center mb-2 text-info">Projects currenty at Technical Review phase</h5>
+
+            </div>
+
+            <div class="card-body">
+                    <table class="table table-striped table-sm">
+                        <thead>
+                            <tr>
+                                <th>Project</th>
+                                <th>Project Category</th>
+                                <th>Unit</th>
+                                <th>Start Date</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+
+                    {% for project in projects %}
+                            <tr>
+                                <td>{{ project.project_title }}</td>
+                                <td>{{ project.project_category }}</td>
+                                <td>{{ project.unit }}</td>
+                                <td>{{ project.start_date }}</td>
+                                <td>
+                                    <a href="{% url "project_details" project.id %}">
+                                        <button class="btn btn-outline-primary btn-sm">Details</button>
+                                    </a>
+
+                                    <a href="{%  url "comments" project.id %}">
+                                        <button class="btn btn-outline-primary btn-sm ">Comments</button>
+                                    </a>
+                                </td>
+                            </tr>
+                    {% endfor %}
+                        </tbody>
+                    </table>
+            </div>
+
+        </div>
+{% endif %}
+
+{% endblock %}
+
+{% block javascript %}
+  <script>
+    $(document).ready(function (){ 
+      $(".description").each(function(i){
+        var len=$(this).text().trim().length;
+        if(len>250)
+        {
+            $(this).text($(this).text().substr(0,100)+'...');
+        }
+    });
+    }); 
+  </script>
+{% endblock %}

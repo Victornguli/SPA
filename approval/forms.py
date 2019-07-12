@@ -39,3 +39,6 @@ class UploadForm(forms.Form):
     # class Meta:
     #     model = Document
     #     fields = ("file",)
+
+class AddCommentForm(forms.Form):
+    comment = forms.CharField(max_length=400, required=True, widget=forms.Textarea(attrs={'placeholder':'Write a comment',"cols":70, "rows":5}), help_text="Add Technical Review comments")

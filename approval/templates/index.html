@@ -4,7 +4,6 @@
 {% block content %}
   <div class="container-fluid">
     {% if user.is_authenticated %}
-
     <div class="card-columns">
         {% for project in projects %}
 
@@ -12,7 +11,7 @@
           <div class="card-header">Project-Title : <b>{{ project.project_title }}</b></div>
           <div class="card-body text-left">
             <p class="card-text description">Description {{ project.description }}</p>
-            <p class="card-text">Status : {{ project.status }}</p>
+            <p class="card-text">Status : {{ project.get_status_display }}</p>
             <p class="card-text">Country : {{ project.country }}</p>
             <p class="card-text">Category : {{ project.project_category }}</p>
             <p class="card-text">Review Date : {{ project.start_date }} to {{ project.end_date }}</p>

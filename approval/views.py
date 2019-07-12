@@ -6,8 +6,8 @@ from django.views.generic.edit import FormView
 from django.views import View as view
 from django.core.files.storage import FileSystemStorage
 
-from .forms import UploadForm,ProjectUploadForm
-from .models import Document, Project
+from .forms import UploadForm,ProjectUploadForm, AddCommentForm
+from .models import Document, Project, Comment
 # Create your views here.
 
 def index(request):
@@ -20,7 +20,6 @@ def index(request):
 
 def AddProject(request):
     if request.method == "POST":
-        print("post")
         form = ProjectUploadForm(request.POST, request.FILES)
         fs = FileSystemStorage()
         print (form.errors)#Debug Form errors
@@ -35,7 +34,7 @@ def AddProject(request):
             end_date = form.cleaned_data.get("end_date")
 
             Project.objects.create(project_title=project_title, project_category=project_category, description=description, country=country,sub_office=sub_office, unit=unit ,start_date=start_date,end_date=end_date, status="tech")
-            #Add default technical review as current project state
+            #Add default techn   ical review as current project state
 
             files = request.FILES.getlist("file")
             
@@ -53,6 +52,7 @@ def AddProject(request):
 def ProjectDetails(request, project_id):
     project = Project.objects.get(id=project_id)
     documents = Document.objects.filter(project_id=project_id)
+    comments = Comment.objects.filter(project_id=project_id)
     docs = []
     for document in documents:
         doc = {}
@@ -64,5 +64,30 @@ def ProjectDetails(request, project_id):
         docs.append(doc)
 
     print(docs)
-    return render(request, "project_detail.html", {"project" : project, "documents":docs})
+    return render(request, "project_detail.html", {"project" : project, "documents":docs, "comments":comments})
+
+
+def TechnicalReview(request):
+    projects = Project.objects.filter(status = "tech")
+    user = request.user
+    return render(request, "technical_review.html", {"projects":projects, "user":user})
+
+
+def Comments(request, project_id):
+    project  = Project.objects.get(id = project_id)
+    user = request.user
+    if request.method == "POST":
+        form = AddCommentForm(request.POST)
+        print(form.errors)
+        if user.is_authenticated:
+            if form.is_valid:
+                comment_text = form.cleaned_data.get("comment")
+                new_comment = Comment.objects.create(comment_text=comment_text, sender=user, project=project, status="tech")
+
+                return redirect("comments", project_id)
+    else:
+        form =  AddCommentForm
+
+    comments = Comment.objects.filter(project_id=project_id, status="tech")
+    return render(request, "comments.html", {"project" : project,"comments":comments, "form":form})
 

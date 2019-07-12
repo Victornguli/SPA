@@ -14,9 +14,9 @@
                             <div class="row">
                                 <div class="col-md-7">
                                         <p class="card-text"> <b>Description</b> <br> {{ project.description }}</p>
-                                        <p class="card-text"> <b>Status</b>  : {{ project.status }}</p>
+                                        <p class="card-text"> <b>Status</b>  : {{ project.get_status_display }}</p>
                                         <p class="card-text"> <b>Category</b>  : {{ project.project_category }}</p>
-                                        <p class="card-text"> <b>Unit</b>  : {{ project.unit }}</p>
+                                        <p class="card-text"> <b>Unit</b>:{{ project.unit }}</p>
                                         <p class="card-text"> <b>Country</b>  : {{ project.country }}</p>
                                         <p class="card-text"> <b>Sub Office</b>  : {{ project.sub_office }}</p>
                                         <p class="card-text"><b>Review Date : </b> <strong>{{ project.start_date }} to {{ project.end_date }}</strong></p>

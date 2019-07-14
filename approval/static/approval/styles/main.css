@@ -27,3 +27,8 @@ body{
     border-radius: 50%;
     margin-right: 20px;
 }
+
+#dark-bg{
+    background-color: whitesmoke !important;
+    border-radius: 5px;
+}

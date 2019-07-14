@@ -30,6 +30,7 @@ urlpatterns = [
     path('^project_details/(?P<project_id>\d+)/$', views.ProjectDetails, name='project_details'),
     path('^technical_review/', views.TechnicalReview, name='technical_review'),
     path('^comments/(?P<project_id>\d+)/$', views.Comments, name='comments'),
+    path('search/', views.search, name='search'),
     # path('upload', views.Upload, name="upload"),
 ]
 

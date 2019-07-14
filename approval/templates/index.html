@@ -1,12 +1,95 @@
 {% extends "base.html" %}
 {% load static %}
+{% load widget_tweaks %}
 
 {% block content %}
   <div class="container-fluid">
     {% if user.is_authenticated %}
-    <div class="card-columns">
-        {% for project in projects %}
 
+    {% else %}
+    <div class="row text-center">
+      <div class="col-md-3"></div>
+      <div class="col-md-6">
+          <div class="alert alert-warning">
+            Viewing projects as a guest. Try logging in <a href="{% url "login" %}"><b>here</b></a></div>
+      </div>
+      <div class="col-md-3"></div>
+    </div>
+    {% endif %}
+
+
+    <div class="card m-auto">
+        <div class="card-header">
+            <div class="row">
+              <div class="col-md-4"></div>
+              <div class="col-md-4">
+                  <a class="card-link" style="color: black" data-toggle="collapse" href="#collapseOne">
+                      <h4 style="margin-top: 0" class="btn btn-block btn-secondary">Filter Projects</h4>
+                    </a>
+              </div>
+              <div class="col-md-4"></div>
+            </div>
+          </div>
+        <form method="get">
+            <div class="bg-light p-3 collapse hide" id="collapseOne"> 
+                <div class="row">
+                    <div class="form-group col-sm-4 col-md-3">
+                        {{ projects.form.project_title.label_tag }}
+                        {% render_field projects.form.project_title class="form-control" %}
+                      </div>
+              
+                      <div class="form-group col-sm-4 col-md-3">
+                        {{ projects.form.start_date.label_tag }}
+                        {% render_field projects.form.start_date class="form-control" %}
+                  </div>
+          
+                      <div class="form-group col-sm-4 col-md-3">
+                        {{ projects.form.end_date.label_tag }}
+                        {% render_field projects.form.end_date class="form-control" %}
+                      </div>
+              
+                      <div class="form-group col-sm-4 col-md-3">
+                        {{ projects.form.country.label_tag }}
+                        {% render_field projects.form.country class="form-control" %}
+                      </div>
+  
+                      <div class="form-group col-sm-4 col-md-3">
+                          {{ projects.form.sub_office.label_tag }}
+                          {% render_field projects.form.sub_office class="form-control" %}
+                      </div>
+  
+                      <div class="form-group col-sm-4 col-md-4">
+                        {{ projects.form.project_category.label_tag }}
+                        <div>
+                          {% for category in projects.form.project_category %}
+                            <label class="checkbox-inline">
+                              {{ category.tag }} {{ category.choice_label }}
+                            </label>
+                          {% endfor %}
+                        </div>
+                      </div>
+  
+                      <div class="form-group col-sm-4 col-md-4">
+                        {{ projects.form.unit.label_tag }}
+                        <div>
+                          {% for unit_name in projects.form.unit %}
+                            <label class="checkbox-inline">
+                              {{ unit_name.tag }} {{ unit_name.choice_label }}
+                            </label>
+                          {% endfor %}
+                        </div>
+                      </div>
+                <button type="submit" class="btn btn-block btn-primary">
+                    <span class="glyphicon glyphicon-search"></span> Search
+                </button>
+            </div>
+        </form>
+
+    </div>
+
+    <div class="card-columns mt-3 mb-3">
+        {% for project in projects.qs %}
+        {% if project %}
         <div class="card">
           <div class="card-header">Project-Title : <b>{{ project.project_title }}</b></div>
           <div class="card-body text-left">
@@ -20,20 +103,30 @@
               <a class="text-light" href="{%  url "project_details" project.id %}"><button class="btn btn-outline-info">View Project</button></a>
           </div>
         </div>
-
+        {% endif %}
         {% endfor %}
     </div>
-  {% else %}
-  <div class="row text-center">
-    <div class="col-md-3"></div>
-    <div class="col-md-6">
-        <div class="alert alert-warning">You are not logged in. Try logging in <a href="{% url "login" %}"><b>here</b></a></div>
+
+    {% if projects.qs|length <= 0 %}
+    <div class="row text-center">
+        <div class="col-md-2"></div>
+        <div class="col-md-8">
+            <div class="alert alert-primary">
+              No Project found with the filters. Try another filter to view relevant projects 
+            </div>
+        </div>
+        <div class="col-md-2"></div>
     </div>
-    <div class="col-md-3"></div>
-  </div>
-  {% endif %}
+
+    {% else %}
+
+    <div class="row"></div>
+      
+    {% endif %}
+
   </div>
 {% endblock %}
+
 {% block javascript %}
   <script>
     $(document).ready(function (){ 

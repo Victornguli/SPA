@@ -45,7 +45,7 @@ class Project(models.Model):
     project_category = models.CharField(max_length=50)
     start_date = models.DateField(auto_now=False, auto_now_add=False)
     end_date = models.DateField(auto_now=False, auto_now_add=False)
-    unit = models.CharField(max_length=50)
+    unit = models.ForeignKey(Unit, on_delete=models.CASCADE, null=True)
     status = models.CharField(max_length=50, choices=status, default="tech")
 
     def __str__(self):

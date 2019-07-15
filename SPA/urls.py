@@ -29,8 +29,14 @@ urlpatterns = [
     path('add_project', views.AddProject, name="add_project"),
     path('^project_details/(?P<project_id>\d+)/$', views.ProjectDetails, name='project_details'),
     path('^technical_review/', views.TechnicalReview, name='technical_review'),
+    path('^prc_review/', views.PrcReview, name='prc_review'),
+    path('^prc_meeting/', views.PrcMeeting, name='prc_meeting'),
+    path('^nfr/', views.NfrCreated, name='nfr'),
+    path('^closed/', views.Closed, name='closed'),
     path('^comments/(?P<project_id>\d+)/$', views.Comments, name='comments'),
     path('search/', views.search, name='search'),
+    path('^change_status/(?P<project_id>\d+)/<slug:status>/', views.changeProjectStatus, name='change_status'),
+    # path('viewer/', views.docPreview, name='viewer'),
     # path('upload', views.Upload, name="upload"),
 ]
 

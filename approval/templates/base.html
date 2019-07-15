@@ -12,6 +12,7 @@
   <link rel="stylesheet" href="{% static "approval/styles/main.css" %}">
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
+  <script src="//code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.20.1/moment.min.js"></script>
   <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/tempusdominus-bootstrap-4/5.0.0-alpha14/js/tempusdominus-bootstrap-4.min.js"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tempusdominus-bootstrap-4/5.0.0-alpha14/css/tempusdominus-bootstrap-4.min.css" />
@@ -20,21 +21,16 @@
 </head>
 <body>
 
-    <nav class="navbar navbar-expand-sm navbar-dark my-nav">
-        <ul class="navbar-nav ml-0">
-            <li class="nav-item">
-              <a class="nav-link active" href="{% url "index" %}" >Home</a>
-            </li>
-        </ul>
+    <nav class="navbar navbar-expand-sm navbar-dark my-nav justify-content-between">
+        <a class="navbar-brand text-light active" href="{% url "index" %}" >SPA Home</a>
 
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
         </button>
+        
+        <div class="collapse navbar-collapse mr-0" id="navbar">
     
-
-        <div class="collapse navbar-collapse" id="navbar">
-    
-          <ul class="navbar-nav mr-0">
+          <ul class="navbar-nav ml-auto">
               <li class="nav-item">
                   <a class="nav-link active" href="{% url "add_project" %}">Add Project</a>
               </li>
@@ -44,19 +40,19 @@
               </li>
 
               <li class="nav-item">
-                  <a class="nav-link" href="#">PRC_Review</a>
+                  <a class="nav-link active" href="{% url "prc_review" %}">PRC_Review</a>
               </li>
 
-              <li class="nav-item">
-                  <a class="nav-link" href="#">PRC_Meeting</a>
+              <li class="nav-item active">
+                  <a class="nav-link" href="{% url "prc_meeting" %}">PRC_Meeting</a>
               </li>
 
-              <li class="nav-item">
-                  <a class="nav-link" href="#">NFR_Created</a>
+              <li class="nav-item active">
+                  <a class="nav-link" href="{% url "nfr" %}">NFR_Created</a>
               </li>
 
-              <li class="nav-item">
-                  <a class="nav-link" href="#">Closed</a>
+              <li class="nav-item active">
+                  <a class="nav-link" href="{% url "closed" %}">Closed</a>
               </li>
 
           </ul>
@@ -73,7 +69,7 @@
   {% endblock %}
   </div>
   {% block javascript %}
-  
+
   {% endblock %}
 </body>
 </html>

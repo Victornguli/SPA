@@ -22,6 +22,10 @@ def index(request):
     else:
         return render(request, "index.html", {"projects":project_filter})    
 
+# def docPreview(request):
+#     projects = Project.objects.all()
+#     return render(request, 'viewerjs/index.html', {'projects': projects})
+
 
 def AddProject(request):
     if request.method == "POST":
@@ -73,22 +77,103 @@ def ProjectDetails(request, project_id):
     docs = []
     for document in documents:
         doc = {}
-        url = document.file.name
+        url = document.file.url
         name = os.path.basename(document.file.url)
         print (url)
         doc = {"name":name,"url":url}
-
         docs.append(doc)
 
     print(docs)
     return render(request, "project_detail.html", {"project" : project, "documents":docs, "comments":comments, "form":form})
 
 
-def TechnicalReview(request):
+def TechnicalReview(request, newContext={}):
     projects = Project.objects.filter(status = "tech")
     project_filter = ProjectFilter(request.GET, queryset=projects)
     user = request.user
-    return render(request, "technical_review.html", {"projects":project_filter, "user":user})
+    context = {"projects":project_filter, "user":user}
+    context.update(newContext)
+    return render(request, "technical_review.html", context=context)
+
+
+def PrcReview(request, newContext={}):
+    projects = Project.objects.filter(status="prc_review")
+    project_filter = ProjectFilter(request.GET, queryset=projects)
+    user = request.user
+    context = {"projects":project_filter, "user":user}
+    context.update(newContext)
+    return render(request, "prc_review.html", context=context)    
+
+
+def PrcMeeting(request, newContext={}):
+    projects = Project.objects.filter(status="prc_meeting")
+    project_filter = ProjectFilter(request.GET, queryset=projects)
+    user = request.user
+    context = {"projects":project_filter, "user":user}
+    context.update(newContext)
+    return render(request, "prc_meeting.html", context=context)
+
+
+def NfrCreated(request, newContext={}):
+    projects = Project.objects.filter(status="nfr")
+    project_filter = ProjectFilter(request.GET, queryset=projects)
+    user = request.user
+    context = {"projects":project_filter, "user":user}
+    context.update(newContext)
+    return render(request, "nfr_created.html", context=context)
+
+
+def Closed(request, newContext={}):
+    projects = Project.objects.filter(status="closed")
+    project_filter = ProjectFilter(request.GET, queryset=projects)
+    user = request.user
+    context = {"projects":project_filter, "user":user}
+    context.update(newContext)
+    return render(request, "closed.html", context=context)    
+    
+
+def changeProjectStatus(request, status, project_id):
+    if request.method == "GET":
+        if project_id and status:
+            # print (status)
+            # print (Project.objects.get(pk=project_id))            
+            if status == "tech_review":
+                project = Project.objects.filter(pk=project_id).update(status=status)
+                message = "The project has been approved for Technical Review. Check the progress "
+                context = {"message":message}
+                response = TechnicalReview(request, context)
+                return response
+
+            elif status == "prc_review":
+                project = Project.objects.filter(pk=project_id).update(status=status)
+                message = "The project has been approved for Project Review Comitee Review. Check the progress "
+                context = {"message":message}
+                response = TechnicalReview(request, context)
+                return response
+
+            elif status == "prc_meeting":
+                project = Project.objects.filter(pk=project_id).update(status=status)
+                message = "The project has been approved for Project Review Comitee Meeting. Check the progress "
+                context = {"message":message}
+                response = PrcReview(request, context)
+                return response
+
+            elif status == "nfr":
+                project = Project.objects.filter(pk=project_id).update(status=status)
+                message = "The project has been approved for NFR Created. Check the progress "
+                context = {"message":message}
+                response = PrcMeeting(request, context)
+                return response
+
+            elif status == "closed":
+                project = Project.objects.filter(pk=project_id).update(status=status)
+                message = "The project has been closed. Check the closed projects "
+                context = {"message":message}
+                response = NfrCreated(request, context)
+                return response                
+            
+            else:
+                return redirect ("technical_review")
 
 
 def Comments(request, project_id):

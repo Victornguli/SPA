@@ -31,7 +31,11 @@
                                                 {% for document in documents %}
                                                 {% if document %}
                                                 <tr>
-                                                <td><a href="{{ document.name }}">{{ document.name }}</a></td>
+                                                <td><a href="{{ document.url }}">{{ document.name }}
+                                                </a></td>
+                                                <!-- <td>
+                                                    <embed src="{{document.url}}" type="application/pdf" height="700px" width="500">
+                                                </td> -->
                                                 </tr>
                                                 {% else %}
                                                 <div class="alert alert-warning alert-dismissible fade show" role="alert">

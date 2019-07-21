@@ -85,6 +85,11 @@
             <div class="alert alert-info">
                 {{ message }} <a href="{% url "nfr" %}">Here</a>
             </div>
+
+            {% elif reject_message %}
+            <div class="alert alert-info">
+                {{ reject_message }} <a href="{% url "closed" %}">Here</a>
+            </div>  
             {% endif %}
 
         </div>
@@ -120,11 +125,11 @@
                                         <button class="btn btn-outline-primary btn-sm">Details</button>
                                     </a>
 
-                                    <a class="confirm-approval" href="{% url "change_status" project.id "nfr" %}">
+                                    <a class="confirm-approval" href="{% url "change_status" project.id "nfr" "prc_meeting" %}">
                                         <button class="btn btn-outline-info btn-sm">Approve</button>
                                     </a>
 
-                                    <a class="confirm-approval" href="{% url "change_status" project.id "closed" %}">
+                                    <a class="confirm-rejection" href="{% url "change_status" project.id "rejected" "prc_meeting" %}">
                                         <button class="btn btn-outline-danger btn-sm">Reject</button>
                                     </a>
                                 </td>
@@ -169,6 +174,10 @@
 
     $(".confirm-approval").click(function(){
       return confirm('This project will be approved for the next phase. Are you sure you want to perform this action?');
+    })
+
+    $(".confirm-rejection").click(function(){
+      return confirm('This project will be rejected and moved to closed projects. Are you sure you want to perform this action?');
     })
 
     $(".op").effect( "bounce", { times: 2 }, "fast" );

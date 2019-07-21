@@ -132,7 +132,7 @@ def Closed(request, newContext={}):
     return render(request, "closed.html", context=context)    
     
 
-def changeProjectStatus(request, status, project_id):
+def changeProjectStatus(request, project_id, status, self):
     if request.method == "GET":
         if project_id and status:
             # print (status)
@@ -170,7 +170,23 @@ def changeProjectStatus(request, status, project_id):
                 message = "The project has been closed. Check the closed projects "
                 context = {"message":message}
                 response = NfrCreated(request, context)
-                return response                
+                return response   
+
+            elif status == "rejected":
+                project = Project.objects.filter(pk=project_id).update(status="closed")
+                reject_message = "The project has been rejected. View this and other closed projects "
+                context = {"reject_message":reject_message}
+
+                if self == "tech_review":
+                    response = TechnicalReview(request, context)
+                elif self == "prc_review":
+                    response = PrcReview(request, context)
+                elif self == "prc_meeting":
+                    response = PrcMeeting(request, context)
+                elif self == "nfr":
+                    response = NfrCreated(request, context)
+
+                return response                               
             
             else:
                 return redirect ("technical_review")
